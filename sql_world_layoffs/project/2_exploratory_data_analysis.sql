@@ -191,4 +191,4 @@ WHERE
     AND total_laid_off IS NOT NULL
     AND total_laid_off > 5000
 ORDER BY
-    total_laid_off DESC
+    total_laid_off DESC;
