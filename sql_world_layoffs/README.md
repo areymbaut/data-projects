@@ -60,7 +60,7 @@ FROM month_cte
 This analysis indicated that:
 - 2020 was marked by rather big layoffs (probably due to the covid pandemic). 
 - 2021 was relatively quiet in terms of layoff.
-- the second half of 2022 and the first quarter of 2023 were marked by massive layoffs (probably due to market instabilities following the Russia/Ukraine conflict that started in the first quarter of 2022).
+- the second half of 2022 and the first quarter of 2023 were marked by massive layoffs (probably due to financial market instabilities following the Russia/Ukraine conflict that started in the first quarter of 2022).
 
 ### Global layoffs per industry
 
@@ -91,6 +91,8 @@ ORDER BY sum_total_laid_off DESC;
 | Finance | 28344 | 20 |
 | Healthcare | 25953 | 25 |
 | Food | 22855 | 30 |
+
+*Table output by the query.*
 
 Most layoffs occured in the **consumer** and **retail** industries. While the total number of employees laid off varies across industry sectors, the average percentage of laid-off workforce is rather similar across them (~20%). This may hint at common layoff causes across these industries.
 
@@ -124,6 +126,8 @@ ORDER BY sum_total_laid_off DESC;
 | Sweden | 11264 | 13 |
 | Brazil | 10391 | 20 |
 
+*Table output by the query.*
+
 Most layoffs occured in the **US**, **India**, **the Netherlands**, **Sweden** and **Brazil**. Layoffs were of the order of ~15% of average laid-off workforce in the Netherlands and Sweden, and ~20-25% of average laid-off workforce in the US, India and Brazil.
 
 #### In Europe
@@ -152,6 +156,8 @@ ORDER BY
 | Netherlands | Booking.com | 4375 | 2020-07-30 |
 | Netherlands | Philips | 4000 | 2022-10-24 |
 | Sweden | Ericsson | 8500 | 2023-02-24 |
+
+*Table output by the query.*
 
 It appears that Dutch layoffs were mainly imputable to **Booking.com** (2020) and **Philips** (2022, 2023), and that Swedish layoffs were mainly imputable to **Ericsson** (2023).
 
@@ -217,9 +223,11 @@ ORDER BY
 | Microsoft | 2023 | 2 | 10000 | 5 |
 | Ericsson | 2023 | 3 | 8500 | 8 |
 
-As aforementioned, layoffs mainly occurred during 2020, 2022 and 2023, with 2020 layoffs probably due to the covid pandemic and 2022-2023 layoffs probably due to market instabilities following the recent Russia/Ukraine conflict. Assuming that these interpretations are accurate:
+*Table output by the query.*
+
+As aforementioned, layoffs mainly occurred during 2020, 2022 and 2023, with 2020 layoffs probably due to the covid pandemic and 2022-2023 layoffs probably due to financial market instabilities following the recent Russia/Ukraine conflict. Assuming that these interpretations are accurate:
 - the covid pandemic affected rather **mid-size companies** (large absolute and relative layoffs).
-- market instabilities even affected **tech giants** (small relative layoffs despite large absolute layoffs).
+- financial market instabilities even affected **tech giants** (small relative layoffs despite large absolute layoffs).
 
 Moreover, one can notice Katerra's **100% relative layoff** in 2021, corresponding to its liquidation that year.
 
@@ -285,6 +293,8 @@ ORDER BY
 | Consumer | 2023 | 2 | 15663 | 18 |
 | Retail | 2023 | 3 | 13609 | 10 |
 
+*Table output by the query.*
+
 We had previously identified the retail and consumer industries as having suffered the largest layoffs, followed by `Other` and the transportation industry. While the retail, consumer and transportation industries appear multiple times in the above table, `Other` only appears once in 2023. What contributed to that?
 
 This query focuses on the `Other` industry in 2023, using an ad-hoc threshold of 5000 employees laid off to truncate it.
@@ -305,5 +315,7 @@ ORDER BY
 |-|:-:|:-:|
 | Microsoft | 10000 | 5 |
 | Ericsson | 8500 | 8 |
+
+*Table output by the query.*
 
 It appears that tech giants such as Microsoft and Ericsson are categorized as part of the `Other` industry in the original dataset. This shows that it would probably be relevant to enhance the original dataset and re-categorize major companies to extract more refined insights.

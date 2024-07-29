@@ -23,7 +23,7 @@ This project was carried out using the following tools:
 
 ### Top-paying remote data-analyst jobs
 
-To identify the highest-paying roles, I filtered data-analyst positions by average yearly salary and location, focusing on remote jobs.
+To identify the highest-paying roles, data-analyst positions were filtered by average yearly salary and location, focusing on remote jobs.
 
 ```sql
 SELECT 
@@ -43,11 +43,26 @@ ORDER BY
 LIMIT 10;
 ```
 
-This analysis indicated that the top data-analyst jobs of 2023 were offered by diverse employers (_e.g._, Meta, AT&T, SmartAsset), with a wide salary range ($184,000-$650,000) and job-title variety.
+| Job ID | Job title | Company | Average yearly salary ($) |
+|-|-|-|:-:|
+| 226942 | Data Analyst | Mantys | 650000.0 |
+| 547832 | Director of Analytics | Meta | 336500.0 |
+| 552322 | Associate Director- Data Insights | AT&T | 255829.5 |
+| 99305 | Data Analyst, Marketing | Pinterest Job Advertisements | 232423.0 |
+| 1021647 | Data Analyst (Hybrid/Remote) | Uclahealthcareers | 217000.0 |
+| 168310 | Principal Data Analyst (Remote) | SmartAsset | 205000.0 |
+| 731368 | Director, Data Analyst - HYBRID | Inclusively | 189309.0 |
+| 310660 | Principal Data Analyst, AV Performance Analysis | Motional | 189000.0 |
+| 1749593 | Principal Data Analyst | SmartAsset | 189000.0 |
+| 387860 | ERM Data Analyst | Get It Recruit - Information Technology | 189000.0 |
+
+*Table output by the query.*
+
+This analysis indicated that the top data-analyst jobs of 2023 were offered by diverse employers (_e.g._, Meta, AT&T, SmartAsset), with a wide salary range (k$184-k$650) and job-title variety.
 
 ### Skills for top-paying remote jobs
 
-To understand what skills are required for the top-paying jobs, I joined the job postings with the skills data, providing insights into what employers value for high-compensation roles.
+To understand what skills are required for the top-paying jobs, job postings were joined with the skills data, providing insights into what employers value for high-compensation roles.
 
 ```sql
 WITH top_paying_jobs AS (
@@ -79,7 +94,54 @@ ORDER BY
     top_paying_jobs.salary_year_avg DESC;
 ```
 
-A demand count was also computed per skill using SQL, indicating that **SQL**, **Python** and **Tableau** are the most demanded skills for top-paying remote data-analyst jobs.
+To summarize the information, a demand count was computed per skill using the following query.
+
+```sql
+WITH top_paying_jobs AS (
+    SELECT 
+        job_postings_fact.job_id,
+        job_postings_fact.job_title,
+        company_dim.name AS company_name,
+        job_postings_fact.salary_year_avg
+    FROM 
+        job_postings_fact
+    LEFT JOIN company_dim ON job_postings_fact.company_id = company_dim.company_id
+    WHERE
+        job_postings_fact.job_title_short = 'Data Analyst'
+        AND job_postings_fact.job_work_from_home = true
+        AND job_postings_fact.salary_year_avg IS NOT NULL
+    ORDER BY
+        job_postings_fact.salary_year_avg DESC
+    LIMIT 10
+)
+
+SELECT 
+    skills_dim.skill_id,
+    skills_dim.skills AS skill,
+    COUNT(skills_dim.skills) AS demand_count
+FROM 
+    top_paying_jobs
+INNER JOIN skills_job_dim ON skills_job_dim.job_id = top_paying_jobs.job_id
+INNER JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id
+GROUP BY
+    skills_dim.skill_id
+ORDER BY
+    demand_count DESC;
+```
+
+| Skill ID | Skill | Demand count |
+|:-:|:-:|:-:|
+| 0 | sql | 8 |
+| 1 | python | 7 |
+| 182 | tableau | 6 |
+| 5 | r | 4 |
+| 93 | pandas | 3 |
+| ... | ... | ... |
+| ... | ... | ... |
+
+*Table showing the first five rows of the table output by the query.*
+
+**SQL**, **Python** and **Tableau** are the most demanded skills for top-paying remote data-analyst jobs.
 
 ### In-demand skills for data analysts
 
@@ -87,8 +149,9 @@ This query helped identify the skills most frequently requested in job postings,
 
 ```sql
 SELECT
-    skills_dim.skills AS most_demanded_skills,
-    COUNT(skills_job_dim.job_id) AS skill_count
+    skills_dim.skill_id AS skill_id,
+    skills_dim.skills AS skill,
+    COUNT(skills_job_dim.job_id) AS demand_count
 FROM 
     job_postings_fact
 INNER JOIN skills_job_dim ON skills_job_dim.job_id = job_postings_fact.job_id
@@ -96,20 +159,25 @@ INNER JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id
 WHERE
     job_postings_fact.job_title_short = 'Data Analyst'
 GROUP BY
-    skills_dim.skills
+    skills_dim.skill_id
 ORDER BY
-    skill_count DESC
+    demand_count DESC
 LIMIT 5;
 ```
 
-The analysis shows that these five skills are most frequently requested:
-1. SQL. 
-2. Excel.
-3. Python.
-4. Tableau.
-5. Power BI.
+| Skill ID | Skill | Demand count |
+|:-:|:-:|:-:|
+| 0 | sql | 92628 |
+| 181 | excel | 67031 |
+| 1 | python | 57326 |
+| 182 | tableau | 46554 |
+| 183 | power bi | 39468 |
 
-On the one hand, this emphasizes the need for strong foundational skills in **data processing and spreadsheet manipulation**. On the other hand, this denotes the increasing importance of technical skills in **data storytelling and decision support**.
+*Table output by the query.*
+
+The analysis shows that the skills above are most frequently requested. This emphasizes:
+- the need for strong foundational skills in **data processing and spreadsheet manipulation**.
+- the increasing importance of technical skills in **data storytelling and decision support**.
 
 ### Top-paying skills for remote jobs
 
@@ -118,7 +186,7 @@ Exploring the average salaries associated with different skills revealed which s
 ```sql
 SELECT
     skills_dim.skill_id,
-    skills_dim.skills AS skills,
+    skills_dim.skills AS skill,
     ROUND(AVG(job_postings_fact.salary_year_avg), 0) AS average_salary
 FROM 
     job_postings_fact
@@ -135,13 +203,24 @@ ORDER BY
 LIMIT 25;
 ```
 
+| Skill ID | Skill | Average yearly salary ($) |
+|:-:|:-:|:-:|
+| 95 | pyspark | 208172 |
+| 218 | bitbucket | 189155 |
+| 85 | watson | 160515 |
+| 65 | couchbase | 160515 |
+| 206 | datarobot | 155486 |
+| ... | ... | ... |
+| ... | ... | ... |
+
+*Table showing the first five rows of the table output by the query.*
+
 Here are the top 3 skills based on salary:
 1. PySpark (big data technology).
 2. Bitbucket (Git solution compatible with Jira).
-3. Watson (Cloud app for AI deployment) ex-aequo with Couchbase (NoSQL server).
+3. Watson (Cloud app for AI deployment) _ex-aequo_ with Couchbase (NoSQL server).
 
-Other top-paying skills notably include famous Python modules
-such as numpy, pandas, scikit-learn.
+Other top-paying skills notably include famous Python modules such as numpy, pandas, scikit-learn.
 
 ### Most optimal skills to learn
 
@@ -150,7 +229,7 @@ Combining insights from demand and salary data, this query aimed to pinpoint ski
 ```sql
 SELECT
     skills_dim.skill_id,
-    skills_dim.skills,
+    skills_dim.skills AS skill,
     COUNT(skills_job_dim.job_id) AS demand_count,
     ROUND(AVG(job_postings_fact.salary_year_avg), 0) AS average_salary
 FROM
@@ -168,9 +247,21 @@ HAVING
 ORDER BY
     average_salary DESC,
     demand_count DESC
-LIMIT 25;
+LIMIT 20;
 ```
 
-Here is a breakdown of the most optimal skills:
-- skills related to cloud/big-data tools (_e.g._, Snowflake, Azure, AWS, BigQuery) show significant demand with relatively high average salaries, pointing towards the growing importance of cloud platforms and big data technologies in data analysis.
-- more classical skills (_e.g._, C++, Python, R, SQL, Tableau) remain in high demand, yet with more average salaries, indicating that proficiency in these skills is highly valued but also widely available.
+| Skill ID | Skill | Demand count | Average yearly salary ($) |
+|:-:|:-:|:-:|:-:|
+| 75 | databricks | 10 | 141907 |
+| 8 | go | 27 | 115320 |
+| 234 | confluence | 11 | 114210 |
+| 97 | hadoop | 22 | 113193 |
+| 80 | snowflake | 37 | 112948 |
+| ... | ... | ... | ... |
+| ... | ... | ... | ... |
+
+*Table showing the first five rows of the table output by the query.*
+
+Here is a breakdown of the most optimal skills (based on the 20 rows output by the above query):
+- skills related to **cloud/big-data tools** (_e.g._, Snowflake, Azure, AWS, BigQuery) show significant demand with relatively high average salaries, pointing towards the growing importance of cloud platforms and big data technologies in data analysis.
+- **more classical skills** (_e.g._, C++, Python, R, SQL, Tableau) remain in high demand, yet with more average salaries, indicating that proficiency in these skills is highly valued but also widely available.
