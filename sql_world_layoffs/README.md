@@ -53,6 +53,10 @@ SELECT
 FROM month_cte
 ```
 
+<img src="https://github.com/user-attachments/assets/891af829-3524-419b-b366-88be2154ee34" width="700">
+
+*Total number of employees laid off and its rolling sum over the covered time period (graph made using Matplotlib).*
+
 This analysis indicated that:
 - 2020 was marked by rather big layoffs (probably due to the covid pandemic). 
 - 2021 was relatively quiet in terms of layoff.
