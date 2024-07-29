@@ -3,7 +3,7 @@ What the the top skills based on salary for remote data-analyst jobs?
 */
 SELECT
     skills_dim.skill_id,
-    skills_dim.skills AS skills,
+    skills_dim.skills AS skill,
     ROUND(AVG(job_postings_fact.salary_year_avg), 0) AS average_salary
 FROM 
     job_postings_fact

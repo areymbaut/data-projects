@@ -4,7 +4,7 @@ while being in relatively high demand too) for remote data-analyst jobs?
 */
 SELECT
     skills_dim.skill_id,
-    skills_dim.skills,
+    skills_dim.skills AS skill,
     COUNT(skills_job_dim.job_id) AS demand_count,
     ROUND(AVG(job_postings_fact.salary_year_avg), 0) AS average_salary
 FROM
@@ -22,7 +22,7 @@ HAVING
 ORDER BY
     average_salary DESC,
     demand_count DESC
-LIMIT 25;
+LIMIT 20;
 
 /*
 Skills related to cloud development and AI deployment are quite sought for,

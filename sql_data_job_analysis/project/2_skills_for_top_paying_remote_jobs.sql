@@ -56,8 +56,8 @@ WITH top_paying_jobs AS (
 
 SELECT 
     skills_dim.skill_id,
-    skills_dim.skills AS most_demanded_skills,
-    COUNT(skills_dim.skills) AS skill_count
+    skills_dim.skills AS skill,
+    COUNT(skills_dim.skills) AS demand_count
 FROM 
     top_paying_jobs
 INNER JOIN skills_job_dim ON skills_job_dim.job_id = top_paying_jobs.job_id
@@ -65,7 +65,7 @@ INNER JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id
 GROUP BY
     skills_dim.skill_id
 ORDER BY
-    skill_count DESC;
+    demand_count DESC;
 
 /*
 Breakdown of the most demanded skills for top-paying remote data-analyst jobs:
