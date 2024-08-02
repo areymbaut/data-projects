@@ -1,4 +1,4 @@
-# SQL project - Job market analysis
+# SQL project - Data job market analysis
 
 ## Introduction
 This project focuses on (remote) data-analyst jobs, identifying top-paying jobs and in-demand skills. Associated SQL queries are located here: [project folder](/sql_data_job_analysis/project/).
