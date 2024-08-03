@@ -4,7 +4,7 @@
 This project was sourced and adapted from [Luke Barousse's Python course](https://www.lukebarousse.com/python). It focuses on analyzing a large dataset of data-analytics job postings from 2023 to gain insight into this job market's landscape.
 
 ## Answered questions
-From the [exploratory data analysis](/python_data_job_analysis/1_exploratory_data_analysis.ipynb):
+From the [exploratory data analysis](1_exploratory_data_analysis.ipynb):
 
 1. Which roles have the most job postings?
 2. Which countries have the most job postings?
@@ -56,7 +56,7 @@ df['job_skills'] = df['job_skills'].apply(convert_skills)
 
 ## Exploratory data analysis
 
-Exploratory data analysis was performed in the Jupyter Notebook [1_exploratory_data_analysis.ipynb](/python_data_job_analysis/1_exploratory_data_analysis.ipynb).
+Exploratory data analysis was performed in the Jupyter Notebook [1_exploratory_data_analysis.ipynb](/python_projects/data_job_market/1_exploratory_data_analysis.ipynb).
 
 ### General aspects
 
