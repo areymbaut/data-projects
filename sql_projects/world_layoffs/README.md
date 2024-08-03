@@ -20,7 +20,9 @@ This project was carried out using the following tools:
 
 ## Data cleaning
 
-The original dataset was cleaned using the queries found in [1_data_cleaning.sql](project/1_data_cleaning.sql). The data cleaning consisted in:
+The original dataset was cleaned using the queries found in [1_data_cleaning.sql](project/1_data_cleaning.sql). 
+
+The data cleaning consisted in:
 1. creating a copy of the original dataset.
 2. removing duplicates.
 3. standardizing entries.
