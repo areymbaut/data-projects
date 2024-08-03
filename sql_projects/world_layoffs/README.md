@@ -1,7 +1,7 @@
 # SQL project - Worldwide layoff analysis
 
 ## Introduction
-This project aims to extract insights regarding layoffs around the world between March 2020 and March 2023. Associated SQL queries are located here: [project folder](/sql_projects/world_layoffs/project/). The dataset, retrieved from [Alex Freberg's Github repository](https://github.com/AlexTheAnalyst/MySQL-YouTube-Series/blob/main/layoffs.csv), can be loaded into a PostgreSQL database using the scripts located here: [sql_load folder](/sql_projects/world_layoffs/sql_load/).
+This project aims to extract insights regarding layoffs around the world between March 2020 and March 2023. Associated SQL queries are located here: [project folder](project/). The dataset, retrieved from [Alex Freberg's Github repository](https://github.com/AlexTheAnalyst/MySQL-YouTube-Series/blob/main/layoffs.csv), can be loaded into a PostgreSQL database using the scripts located here: [sql_load folder](sql_load/).
 
 ## Answered questions
 1. When did massive layoffs occur during the covered time period? 
@@ -20,7 +20,7 @@ This project was carried out using the following tools:
 
 ## Data cleaning
 
-The original dataset was cleaned using the queries found in [1_data_cleaning.sql](/sql_projects/world_layoffs/project/1_data_cleaning.sql). The data cleaning consisted in:
+The original dataset was cleaned using the queries found in [1_data_cleaning.sql](project/1_data_cleaning.sql). The data cleaning consisted in:
 1. creating a copy of the original dataset.
 2. removing duplicates.
 3. standardizing entries.
@@ -30,7 +30,7 @@ The original dataset was cleaned using the queries found in [1_data_cleaning.sql
 
 ## Exploratory data analysis
 
-Exploratory data analysis was performed using the queries found in [2_exploratory_data_analysis.sql](/sql_projects/world_layoffs/project/2_exploratory_data_analysis.sql).
+Exploratory data analysis was performed using the queries found in [2_exploratory_data_analysis.sql](project/2_exploratory_data_analysis.sql).
 
 ### Temporal evolution of the layoffs
 
