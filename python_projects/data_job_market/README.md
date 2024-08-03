@@ -56,7 +56,7 @@ df['job_skills'] = df['job_skills'].apply(convert_skills)
 
 ## Exploratory data analysis
 
-Exploratory data analysis was performed in the Jupyter Notebook [1_exploratory_data_analysis.ipynb](/python_projects/data_job_market/1_exploratory_data_analysis.ipynb).
+Exploratory data analysis was performed in the Jupyter Notebook [1_exploratory_data_analysis.ipynb](1_exploratory_data_analysis.ipynb).
 
 ### General aspects
 
@@ -98,7 +98,7 @@ Living in Sweden, I was interested in looking at the main Swedish employers as w
 
 ## What are the most demanded skills for selected data roles?
 
-The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [2_skill_demand.ipynb](/python_data_job_analysis/2_skill_demand.ipynb).
+The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [2_skill_demand.ipynb](2_skill_demand.ipynb).
 
 Most demanded skills were identified by exploding the skill lists in `job_skills`, counting skills per job title, and sorting according to the skill count.  
 
@@ -166,7 +166,7 @@ The most popular data roles (and their senior counterparts) were selected to get
 
 ## Were there trends in terms of job-posting count or most demanded skills throughout 2023?
 
-The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [3_skill_monthly_trends.ipynb](/python_data_job_analysis/3_skill_monthly_trends.ipynb).
+The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [3_skill_monthly_trends.ipynb](3_skill_monthly_trends.ipynb).
 
 The dataset covers data job postings throughout 2023. It may be interesting to look at how the number of job postings and the likelihood for skills to be requested behaved monthly. Here, we focused on data-analyst job-postings as an example. Answering the question at hand was a great opportunity to use a pivot table, as shown below.
 
@@ -220,7 +220,7 @@ Importantly, the number of job postings and skill likelihood behave similarly fo
 
 ## Which data roles and skills are associated with higher salaries?
 
-The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [4_salary_analysis.ipynb](/python_data_job_analysis/4_salary_analysis.ipynb).
+The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [4_salary_analysis.ipynb](4_salary_analysis.ipynb).
 
 ### Salary distributions for most popular data roles
 
@@ -282,7 +282,7 @@ _The top graph, displaying the highest paid skills, was truncated because `svn` 
 
 ## What are the most optimal skills to learn?
 
-The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [5_optimal_skills.ipynb](/python_data_job_analysis/5_optimal_skills.ipynb).
+The Python code yielding the analysis/visualization below can be found in the Jupyter Notebook [5_optimal_skills.ipynb](5_optimal_skills.ipynb).
 
 Here, a skill is deemed "optimal" if it is highly requested while being associated with a large median yearly salary. Thus, a 2D visualization appears most suited to address the problem at hand. We compared the cases of data-analyst and data-scientist job-postings. The general code for one of these cases goes as follows:
 
