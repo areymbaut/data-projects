@@ -1,7 +1,7 @@
 # SQL project - Data job market analysis
 
 ## Introduction
-This project focuses on (remote) data-analyst jobs, identifying top-paying jobs and in-demand skills. Associated SQL queries are located here: [project folder](/sql_data_job_analysis/project/).
+This project focuses on (remote) data-analyst jobs, identifying top-paying jobs and in-demand skills. Associated SQL queries are located here: [project folder](/data_job_market/project/).
 
 The dataset was retrieved from [Luke Barousse's SQL course](https://lukebarousse.com/sql). It contains insights on job titles, salaries, locations and essential skills for various data-analytics job postings from 2023.
 
