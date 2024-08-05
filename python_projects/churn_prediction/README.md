@@ -1,7 +1,7 @@
 # Python project - Churn prediction
 
 ## Introduction
-This project aims at predicting churn for a fictitious bank, based on the [Churn Modelling](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling?resource=download) Kaggle dataset. It ultimately consists of a binary classification problem.
+This project aims at predicting churn for a fictitious bank, based on the [Churn Modelling Kaggle dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling?resource=download). It ultimately consists of a binary classification problem.
 
 ## Answered questions
 
