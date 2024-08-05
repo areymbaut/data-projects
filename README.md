@@ -19,10 +19,10 @@ This repository collects various personal projects aiming at enhancing my data-a
   - Carry out an exploratory data analysis.
   - Predict customer churn for a fictitious bank using various classical machine-learning models.
   - Perform feature engineering and model hyperparameter tuning.
-  - ![Static Badge](https://img.shields.io/badge/Scikit_Learn-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
+  - ![Static Badge](https://img.shields.io/badge/Scikit_Learn-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [NVIDIA stock price prediction](/python_projects/nvidia_stock_price_prediction/)
   - Predict the NVIDIA stock price using a Long Short-Term Memory (LSTM) neural network.
-  - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
+  - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 
 
 ## SQL projects
