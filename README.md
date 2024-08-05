@@ -16,7 +16,7 @@ This repository collects various personal projects aiming at enhancing my data-a
   - Clean up a small dataset to generate a list of customers that can be called by a fictitious commercial team.
   - ![Static Badge](https://img.shields.io/badge/Pandas-blue)
 - [Churn prediction](/python_projects/churn_prediction/)
-  - Predict customer churn for a fictitious bank using various classical machine-learning models.
+  - Predict customer churn for a fictitious bank using various classical machine-learning classifiers.
   - Perform feature engineering and model hyperparameter tuning.
   - ![Static Badge](https://img.shields.io/badge/Scikit_Learn-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [NVIDIA stock price prediction](/python_projects/nvidia_stock_price_prediction/)
