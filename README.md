@@ -1,6 +1,6 @@
 # data-projects
 
-This repository collects various personal projects aiming at enhancing my data-analysis skills. While each project is further detailed within their respective README file, please find below summaries of these projects and the main skills they involved.
+This repository collects various personal projects aiming at enhancing my data-analysis and data-science skills. While each project is further detailed within their respective README file, please find below summaries of these projects and the main skills they involved.
 
 ## Python projects
 
