@@ -1,7 +1,7 @@
 # Python project - Handwritten digit classification
 
 ## Introduction
-This project aims at classify handwritten digits into 10 classes using dimensionality reduction and a classical machine-learning classifier.
+This project aims at classifying handwritten digits into 10 classes using dimensionality reduction and a classical machine-learning classifier.
 
 Ideally, the classification should be visualizable in a 2D graph at the end (hence the dimensionality reduction).
 
