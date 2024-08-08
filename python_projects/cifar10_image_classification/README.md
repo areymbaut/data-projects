@@ -5,7 +5,7 @@ This project aims at classifying images into 10 classes using convolutional neur
 
 ## Tools I used
 This project was carried out using the following tools:
-- **Python (Numpy, Matplotlib)** - backbone of the data analysis and visualization.
+- **Python (Numpy, Matplotlib, Seaborn)** - backbone of the data analysis and visualization.
 - **Python (Pytorch)** - machine learning toolbox.
 - **Jupyter Notebooks** - facilitating table and plot visualizations during the analysis.
 - **Visual Studio Code** - my go-to code editor.
