@@ -1,4 +1,4 @@
-# Python project - CIFAR10 image classification
+# Python project - CIFAR-10 image classification
 
 ## Introduction
 This project aims at classifying images into 10 classes using a convolutional neural network.
