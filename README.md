@@ -22,11 +22,19 @@ This repository collects various personal projects aiming at enhancing my data-a
 - [NVIDIA stock price prediction](/python_projects/nvidia_stock_price_prediction/)
   - Predict the NVIDIA stock price using a Long Short-Term Memory (LSTM) neural network.
   - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
-- [Handwritten digit classification](/python_projects/handwritten_digit_classification)
+- [Handwritten digit classification (classical)](/python_projects/handwritten_digit_classification)
   - Classify handwritten digits using dimensionality reduction (UMAP) and a classical machine-learning classifier.
   - ![Static Badge](https://img.shields.io/badge/Scikit_Learn-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen)
+- [Handwritten digit classification (convolutional neural network)](/python_projects/handwritten_digit_classification_cnn)
+  - Classify a bigger dataset of handwritten digits using a LeNet-5 convolutional neural network.
+  - Investigate some feature maps.
+  - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen)
 - [CIFAR-10 image classification](/python_projects/cifar10_image_classification)
-  - Classify images into 10 classes using a convolutional neural network.
+  - Classify color images into 10 classes using a rather deep convolutional neural network.
+  - Compare the performance of:
+    - a traditional convolutional network.
+    - a convolutional network comprising residual connections (ResNet).
+    - a convolutional network comprising skip connections.
   - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 
 
