@@ -1,7 +1,7 @@
-# Python project - CIFAR-10 image classification
+# Python project - CIFAR-10 image classification using a residual network (ResNet)
 
 ## Introduction
-This project aims at classifying images into 10 classes using a convolutional neural network.
+This project aims at classifying 32x32 color images into 10 classes using a convolutional neural network. We compare the performance of a residual network (ResNet) with a traditional convolutional network and a similar network wherein residual connections were replaced by skip connections. 
 
 ## Tools I used
 This project was carried out using the following tools:
@@ -17,121 +17,359 @@ The project was carried out in the Jupyter Notebook [image_classification.ipynb]
 
 ### Data loading and visualization
 
-The CIFAR10 dataset contains 60000 32x32 color images distributed among 10 classes, with 6000 images per class (so the dataset is balanced).
+The CIFAR10 dataset contains 60000 32x32 color images distributed among 10 classes, with 6000 images per class (so the dataset is balanced). Data was loaded and subsequently split into training, validation and testing sets.
 
 ```python
-# Dataset has PILImage images of range [0, 1]
-# We transform them to tensors of normalized range [-1, 1]
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
-)
-
-# CIFAR10 data
-input_size = 3  # Color channels in the images
 pixel_size = 32  # Images are 32x32 pixels
-train_dataset = torchvision.datasets.CIFAR10(root=data_directory,
-                                             train=True,
-                                             transform=transform,
-                                             download=True)
 
-test_dataset = torchvision.datasets.CIFAR10(root=data_directory,
-                                            train=False,
-                                            transform=transform,
-                                            download=True)
+# Composition of transforms for our dataset (PIL images)
+# The last normalization step rescales using the mean and std of the data
+data_mean = [0.485, 0.456, 0.406]
+data_std = [0.229, 0.224, 0.225]
+transform = transforms.Compose(
+    [transforms.Resize(pixel_size),  # Bilinear interpolation
+     transforms.ToTensor(),  # Conversion to tensor (float conversion and 0-1 rescaling)
+     transforms.Normalize(data_mean, data_std)]
 
-# Data loader
-batch_size = pixel_size
-train_loader = DataLoader(dataset=train_dataset,
-                          batch_size=batch_size,
-                          shuffle=True)
+# Loading MNIST dataset of handwritten digits
+train_data = datasets.CIFAR10(data_dir,
+                              train=True,
+                              download=True,
+                              transform=transform)
+test_data = datasets.CIFAR10(data_dir,
+                             train=False,
+                             download=True,
+                             transform=transform)
 
-test_loader = DataLoader(dataset=test_dataset,
-                         batch_size=batch_size,
-                         shuffle=False)
+# Let us split the training set into train and validation sets
+train_size = 0.9
+n_samples_train = int(len(train_data)*train_size)
+n_samples_val = len(train_data) - n_samples_train
+train_data, val_data \
+    = torch.utils.data.random_split(train_data,
+                                    [n_samples_train, n_samples_val],
+                                    generator=torch.Generator().manual_seed(42))
 ```
 
-<img src="figures/1_some_images.png" width="700">
+<img src="figures/1_some_images.png" width="500">
 
 _Some images from the dataset._
 
 
-### Convolutional neural network (CNN) classifier
+### Convolutional neural network (CNN) classifiers
 
-The CNN classifier was defined as follows and was trained using a cross-entropy loss (typical for multi-class classifications) 
+Three CNN classifiers were designed as follows:
+- an initial set of convolutional/pooling layers downsamples feature maps to get a reasonable number of parameters.
+- a block of layers comes after and can be set as a traditional convolutional block `ConvBlock`, a residual block `ResBlock` (with residual connections) or a skip block `SkipBlock` (with skip connections).
+- after flattening the output and enforcing dropout, two fully connected layers handle the final classification. 
 
 ```python
-class ConvolutionalNeuralNetwork(nn.Module):
-    """
-    Convolutional neural network.
-    """
-    def __init__(self,
-                 input_size: int,
-                 pixel_size: int,
-                 num_classes: int,
-                 drop_prob: float = 0.1,
-                 block_size: int = 5,
-                 block_scheduler_n: int = 20000) -> None:
+class ConvBlock(nn.Module):
+    # Convolutional block with no residual connection
+    def __init__(self, n_channels: int) -> None:
         super().__init__()
-
-        # Hyperparameters
-        conv_kernel_size = 3
-        pool_size = 2
-        hidden_size_1 = 32
-        hidden_size_2 = 64
-        hidden_size_3 = 128
-        hidden_size_fc = 64
 
         # Activation function
         self.activation = nn.ReLU()
 
+        # Convolutional and batch-norm layers
+        conv_kernel_size = 3
+        conv_stride = 1
+        conv_padding = 1
+        self.conv1 = nn.Conv2d(in_channels=n_channels,
+                               out_channels=n_channels//2,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+        self.bn1 = nn.BatchNorm2d(n_channels//2)    # Normalize batch per channel
+                                                    # to mitigate internal covariate shift
+        self.conv2 = nn.Conv2d(in_channels=n_channels//2,
+                               out_channels=n_channels,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.activation(x)  # Activate first to later compare with ResBlock below
+        x = self.activation(self.bn1(self.conv1(x)))
+        x = self.conv2(x)
+        return x
+
+
+class ResBlock(nn.Module):
+    # Convolutional block with simple identity residual connection
+    def __init__(self, n_channels: int) -> None:
+        super().__init__()
+
+        # Activation function
+        self.activation = nn.ReLU()
+
+        # Convolutional and batch-norm layers
+        conv_kernel_size = 3
+        conv_stride = 1
+        conv_padding = 1
+        self.conv1 = nn.Conv2d(in_channels=n_channels,
+                               out_channels=n_channels//2,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+        self.bn1 = nn.BatchNorm2d(n_channels//2)    # Normalize batch per channel
+                                                    # to mitigate internal covariate shift
+        self.conv2 = nn.Conv2d(in_channels=n_channels//2,
+                               out_channels=n_channels,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x0 = x  # Skip before activation
+        x = self.activation(x)
+        x = self.activation(self.bn1(self.conv1(x)))
+        x = self.conv2(x)
+        return x + x0  # Output addition
+
+
+class SkipBlock(nn.Module):
+    # Convolutional block with simple skip connection
+    # Keep the output size equal to the input size if n_channels is even
+    def __init__(self, n_channels: int) -> None:
+        super().__init__()
+
+        if n_channels % 2:  # Odd n_channels
+            raise ValueError('n_channels should be even here, '
+                             + 'to guarantee equal input and output sizes')
+
+        # Activation function
+        self.activation = nn.ReLU()
+
+        # Convolutional and batch-norm layers
+        conv_kernel_size = 3
+        conv_stride = 1
+        conv_padding = 1
+        self.conv1 = nn.Conv2d(in_channels=n_channels,
+                               out_channels=n_channels//2,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+        self.bn1 = nn.BatchNorm2d(n_channels//2)
+        self.conv2 = nn.Conv2d(in_channels=n_channels//2,
+                               out_channels=n_channels//2,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+    
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x1 = self.activation(self.conv1(x))
+
+        x2 = self.activation(self.bn1(x1))
+        x3 = self.conv2(x2)
+        return torch.cat((x1, x3), 1)  # Output concatenation
+
+
+def output_size_from_conv_pool(n_in: Tuple[int, int], conv_pool):
+    kernel_size = conv_pool.kernel_size
+    stride = conv_pool.stride
+    dilation = conv_pool.dilation
+    padding = conv_pool.padding
+
+    if isinstance(kernel_size, tuple):
+        n_out_0 = int(np.floor(
+            (n_in[0] + 2*padding[0] - dilation[0]*(kernel_size[0] - 1) - 1)/stride[0] + 1))
+        n_out_1 = int(np.floor(
+            (n_in[1] + 2*padding[1] - dilation[1]*(kernel_size[1] - 1) - 1)/stride[1] + 1))
+    else:
+        n_out_0 = int(np.floor(
+            (n_in[0] + 2*padding - dilation*(kernel_size - 1) - 1)/stride + 1))
+        n_out_1 = n_out_0
+
+    return (n_out_0, n_out_1)
+
+
+class DeepNet(nn.Module):
+    def __init__(self,
+                 n_channels: int,
+                 pixel_size: int,
+                 n_hidden: int,
+                 n_hidden_fc: int,
+                 n_classes: int,
+                 n_blocks: int = 2,
+                 block_type = ResBlock,  # ConvBlock, ResBlock or SkipBlock
+                 dropout: float = 0.5
+                 ) -> None:
+        super().__init__()
+
+        # General architectural information
+        self.activation = nn.ReLU()
+
+        self.n_hidden = n_hidden
+
+        conv_kernel_size = 3
+        conv_stride = 1
+        conv_padding = 1
+        pool_kernel_size = 2
+
+        # Max pooling layer
+        self.pool = nn.MaxPool2d(pool_kernel_size)
+
         # Convolutional layers
-        self.conv_1 = nn.Conv2d(input_size, hidden_size_1, conv_kernel_size)
-        self.conv_2 = nn.Conv2d(hidden_size_1, hidden_size_2, conv_kernel_size)
-        self.conv_3 = nn.Conv2d(hidden_size_2, hidden_size_3, conv_kernel_size)
+        self.conv1 = nn.Conv2d(in_channels=n_channels,
+                               out_channels=n_hidden,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+        self.bn1 = nn.BatchNorm2d(n_hidden)
 
-        # Pooling layer
-        self.pool = nn.MaxPool2d(pool_size, pool_size)
+        self.conv2 = nn.Conv2d(in_channels=n_hidden,
+                               out_channels=n_hidden,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
+        self.bn2 = nn.BatchNorm2d(n_hidden)
 
-        # We keep track of output_size, i.e., what pixel_size becomes 
-        # throughout the network layers, to know which input size value 
-        # input_size_linear to set for the first fully connected layer self.fc1 below
-        output_size = pixel_size - (conv_kernel_size - 1)  # After conv_1
-        output_size = np.floor((output_size - pool_size)/pool_size + 1).astype(int)  # After pooling
-        output_size -= (conv_kernel_size - 1)  # After conv_2
-        output_size = np.floor((output_size - pool_size)/pool_size + 1).astype(int)  # After pooling
-        output_size -= (conv_kernel_size - 1)  # After conv_3
-
-        if output_size <= 0:
-            raise ValueError('output_size <= 0, check other dimensions to get output_size > 0')
+        self.conv3 = nn.Conv2d(in_channels=n_hidden,
+                               out_channels=n_hidden,
+                               kernel_size=conv_kernel_size,
+                               stride=conv_stride,
+                               padding=conv_padding)
         
-        # We flatten the output of the convolutional layers
-        input_size_flatten = hidden_size_3*output_size*output_size
+        # nn.Sequential list of ResBlocks if n_blocks > 0
+        self.n_blocks = n_blocks
+        self.block_type = block_type
+        if n_blocks > 0:
+            self.layers = self.assemble_blocks()
+        else:
+            self.layers = nn.Identity()
 
-        # Fully connected layers for classification
-        self.fc_1 = nn.Linear(input_size_flatten, hidden_size_fc)
-        self.fc_2 = nn.Linear(hidden_size_fc, num_classes)
+        # Dropout layer
+        self.dropout = nn.Dropout(p=dropout)
+
+        # What pixel_size becomes through the initial layers
+        # To set the input size of the final fully connected layer
+        output_size = (pixel_size, pixel_size)
+        output_size = output_size_from_conv_pool(output_size, self.conv1)
+        output_size = output_size_from_conv_pool(output_size, self.pool)
+        output_size = output_size_from_conv_pool(output_size, self.conv2)
+        output_size = output_size_from_conv_pool(output_size, self.pool)
+        output_size = output_size_from_conv_pool(output_size, self.conv3)
+        output_size = output_size_from_conv_pool(output_size, self.pool)
+        output_size = output_size[0]
+        
+        if output_size <= 0:
+            raise ValueError('output_size <= 0, check other dimensions to get output_size > 0')    
+        
+        n_outputs = n_hidden*output_size**2
+
+        # Fully connected layers
+        self.linear1 = nn.Linear(n_outputs, n_hidden_fc)
+        self.linear2 = nn.Linear(n_hidden_fc, n_classes)
+
+        # Initialize loggers
+        self.train_loss_logger = []
+        self.train_accuracy_logger = []
+        self.val_accuracy_logger = []
+
+
+    def assemble_blocks(self):
+        # Put together residual or skip blocks into an nn.Sequential
+        blocks = []
+        for _ in range(self.n_blocks):
+            blocks.append(self.block_type(self.n_hidden))
+        return nn.Sequential(*blocks)
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x has size (N=batch_size, 3, 32, 32)
-        # (Output sizes indicated below assuming conv_kernel_size = 3,
-        #  pool_size = 2, hidden_size_1 = 32, hidden_size_2 = 64)
-        x = self.activation(self.conv_1(x))  # (N, 32, 30, 30)
-        x = self.pool(x)                     # (N, 32, 15, 15)
-        x = self.activation(self.conv_2(x))  # (N, 64, 13, 13)
-        x = self.pool(x)                     # (N, 64, 6, 6)
-        x = self.activation(self.conv_3(x))  # (N, 64, 4, 4)
-        x = torch.flatten(x, 1)              # (N, 1024)
-        x = self.activation(self.fc_1(x))    # (N, 64)
-        x = self.fc_2(x)                     # (N, num_classes)
+        # Initial convolutional/pooling layers to downsample feature maps
+        # and get a reasonable number of parameters for final classification
+        # (No activation on final output so that 
+        #  the subsequent blocks are fed the raw output)
+        x = self.activation(self.bn1(self.conv1(x)))
+        x = self.pool(x)
+        x = self.activation(self.bn2(self.conv2(x)))
+        x = self.pool(x)
+        x = self.conv3(x)
+
+        # Pass through blocks
+        x = self.activation(self.layers(x))
+        x = self.pool(x)
+
+        # Flatten
+        x = torch.flatten(x, 1)
+
+        # Dropout to mitigate overfitting
+        x = self.dropout(x)
+
+        # Fully connected layers
+        x = self.activation(self.linear1(x))
+        x = self.linear2(x)
+
         return x
 ```
 
-The evaluation of the model on the testing dataset yielded an accuracy of 73.7%, associated with the confusion matrix below.
+We defined three models using similar code as below (the example below corresponds to the ResNet case). Without changing any other parameter:
+- the model with `block_type=ConvBlock` was called `Custom_ConvNet`.
+- the model with `block_type=ResBlock` was called `Custom_ResNet`.
+- the model with `block_type=SkipBlock` was called `Custom_SkipNet`.
 
-<img src="figures/2_cnn_confusion_matrix.png" width="700">
+The `ModelTrainer` class was taken and adapted from [Luke Ditria's GitHub account](https://github.com/LukeDitria/pytorch_tutorials/blob/main/section05_transfer_learning/notebooks/Trainer.py).
 
-The missclassification count below shows that the cat and dog labels are the most likely labels to be misclassified as each other.
+```python
+from Trainer import ModelTrainer
 
-<img src="figures/3_cnn_misclassification_count.png" width="700">
+# Define model
+model_name = 'Custom_ResNet'
+model = DeepNet(n_channels=n_channels_in,
+                pixel_size=pixel_size,
+                n_hidden=32,
+                n_hidden_fc=32,
+                n_classes=n_classes,
+                n_blocks=6,
+                block_type=ResBlock,
+                dropout=0.5).to(device)
+
+# Set up model trainer
+batch_size = 128
+n_epochs = 30
+learning_rate = 1e-4
+start_from_checkpoint = False
+
+model_trainer = ModelTrainer(model=model,
+                             device=device,
+                             loss_fun=nn.CrossEntropyLoss(),
+                             batch_size=batch_size,
+                             learning_rate=learning_rate,
+                             save_dir=model_dir,
+                             model_name=model_name,
+                             start_from_checkpoint=start_from_checkpoint)
+
+# Set up data
+model_trainer.set_data(train_set=train_data,
+                       val_set=val_data,
+                       test_set=test_data)
+```
+
+The training and validation accuracies throughout training are displayed below for all three networks. The final testing accuracy is also shown, as a guide to the eye.
+
+<img src="figures/3_training_validation_accuracy_Custom_ConvNet.png" width="450">
+<img src="figures/3_training_validation_accuracy_Custom_ResNet.png" width="450">
+<img src="figures/3_training_validation_accuracy_Custom_SkipNet.png" width="450">
+
+**Breakdown:**
+- The `Custom_ConvNet` classifier has reached an accuracy of 65.18%.
+- The `Custom_SkipNet` classifier has reached an accuracy of 69.38%.
+    - Better than `Custom_ConvNet` despite its fewer parameters.
+- The `Custom_ResNet` classifier has reached an accuracy of 71.48%.
+    - This corresponds to 6.3% more accuracy than `Custom_ConvNet` and 2.1% more accuracy than `Custom_SkipNet`.
+- All networks present some degree of overfitting, as their training accuracy overshoots their validation accuracy.
+    - `Custom_ConvNet` has the most overfitting.
+    - Overfitting is mitigated in `Custom_ResNet` and `Custom_SkipNet`, with `Custom_SkipNet` having the lowest overfitting, potentially due to its fewer parameters.
+
+### Further investigation of the ResNet predictions
+
+Here is the confusion matrix of `Custom_ResNet`.
+
+<img src="figures/4_confusion_matrix_Custom_ResNet.png" width="600">
+
+The missclassification count below shows that the cat and dog labels are the most likely labels to be misclassified as each other. Note that these top misclassified labels are shared by the other trained networks within this project.
+
+<img src="figures/5_misclassification_count_Custom_ResNet.png" width="600">

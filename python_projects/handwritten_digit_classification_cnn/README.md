@@ -22,12 +22,12 @@ The MNIST dataset, containing 70000 black-and-white images, was loaded and inter
 ```python
 # Composition of transforms for our dataset (PIL images)
 # The last normalization step rescales using the mean and std of the data
-data_mean = 0.1307
-data_std = 0.308
+data_mean = [0.1307]
+data_std = [0.308]
 transform = transforms.Compose(
     [transforms.Resize(pixel_size),  # Bilinear interpolation
      transforms.ToTensor(),  # Conversion to tensor (float conversion and 0-1 rescaling)
-     transforms.Normalize([data_mean], [data_std])]
+     transforms.Normalize(data_mean, data_std)]
 )
 
 # Loading MNIST dataset of handwritten digits
@@ -62,6 +62,25 @@ _Some digits from the dataset._
 We used the classical LeNet-5 neural network, one of the earliest convolutional neural networks (dating back to 1998). The model is defined below, along with methods for setting data loaders and optimizer parameters, and for carrying out its training and evaluation.
 
 ```python
+def output_size_from_conv_pool(n_in: Tuple[int, int], conv_pool):
+    kernel_size = conv_pool.kernel_size
+    stride = conv_pool.stride
+    dilation = conv_pool.dilation
+    padding = conv_pool.padding
+
+    if isinstance(kernel_size, tuple):
+        n_out_0 = int(np.floor(
+            (n_in[0] + 2*padding[0] - dilation[0]*(kernel_size[0] - 1) - 1)/stride[0] + 1))
+        n_out_1 = int(np.floor(
+            (n_in[1] + 2*padding[1] - dilation[1]*(kernel_size[1] - 1) - 1)/stride[1] + 1))
+    else:
+        n_out_0 = int(np.floor(
+            (n_in[0] + 2*padding - dilation*(kernel_size - 1) - 1)/stride + 1))
+        n_out_1 = n_out_0
+
+    return (n_out_0, n_out_1)
+
+
 class LeNet(nn.Module):
     def __init__(self,
                  n_channels: int,
@@ -93,18 +112,17 @@ class LeNet(nn.Module):
         
         # What pixel_size becomes through the initial layers
         # To set the input size of the first fully connected layer
-        output_size = pixel_size
-        output_size -= (conv_kernel_size - 1)  # From conv1
-        output_size \
-            = np.floor((output_size - pool_kernel_size)/pool_kernel_size + 1).astype(int)  # After pooling
-        output_size -= (conv_kernel_size - 1)  # From conv2
-        output_size \
-            = np.floor((output_size - pool_kernel_size)/pool_kernel_size + 1).astype(int)  # After pooling
+        output_size = (pixel_size, pixel_size)
+        output_size = output_size_from_conv_pool(output_size, self.conv1)
+        output_size = output_size_from_conv_pool(output_size, self.pool)
+        output_size = output_size_from_conv_pool(output_size, self.conv2)
+        output_size = output_size_from_conv_pool(output_size, self.pool)
+        output_size = output_size[0]
+        
+        if output_size <= 0:
+            raise ValueError('output_size <= 0, check other dimensions to get output_size > 0')    
         
         n_outputs_from_conv = n_hidden_2*output_size**2
-        if n_outputs_from_conv <= 0:
-            raise ValueError('n_outputs_from_conv <= 0, check other dimensions '
-                             + 'to get n_outputs_from_conv > 0')    
         
         # Fully connected layers
         self.linear1 = nn.Linear(n_outputs_from_conv, n_hidden_fc_1)
