@@ -57,8 +57,6 @@ _Some digits from the dataset._
 
 ### LeNet-5 convolutional neural network (CNN) classifier
 
-### Definition
-
 We used the classical LeNet-5 neural network, one of the earliest convolutional neural networks (dating back to 1998). The model is defined below, along with methods for setting data loaders and optimizer parameters, and for carrying out its training and evaluation.
 
 ```python
