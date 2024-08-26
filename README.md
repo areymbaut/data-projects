@@ -36,7 +36,7 @@ This repository collects various personal projects aiming at enhancing my data-a
     - a convolutional network comprising residual connections (ResNet).
     - a convolutional network comprising skip connections.
   - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
-- [Oject detection (region-based convolutional neural network)](/python_projects/object_detection)
+- [Object detection (region-based convolutional neural network)](/python_projects/object_detection)
   - Detect objects and classify them into 20 categories using a region-based convolutional neural network (R-CNN).
   - Take advantage of transfer learning to do so.
   - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen)
