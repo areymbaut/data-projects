@@ -10,7 +10,7 @@ This repository collects various personal projects aiming at enhancing my data-a
   - ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [World population analysis](/python_projects/world_population_analysis/)
   - Take a quick look at the world population between 1970 and 2022.
-  - Identify if certain continental populations grown faster than others.
+  - Identify if certain continental populations have grown faster than others.
   - ![Static Badge](https://img.shields.io/badge/Pandas-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [Customer call list cleanup](/python_projects/customer_call_list_cleanup/)
   - Clean up a small dataset to generate a list of customers that can be called by a fictitious commercial team.
