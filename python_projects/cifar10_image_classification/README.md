@@ -1,4 +1,4 @@
-# Python project - CIFAR-10 image classification using a residual network (ResNet)
+# Python project - CIFAR-10 image classification using a residual neural network (ResNet)
 
 ## Introduction
 This project aims at classifying 32x32 color images into 10 classes using a convolutional neural network. We compare the performance of a residual network (ResNet) with a traditional convolutional network and a similar network wherein residual connections were replaced by skip connections. 
