@@ -58,7 +58,7 @@ def load_model(model_path: str) -> models.resnet.ResNet:
     model.fc = nn.Linear(model.fc.in_features, n_classes)
 
     # Load checkpoint state dictionary
-    checkpoint = torch.load(model_path, weights_only=True)
+    checkpoint = torch.load(model_path)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(torch.device('cpu'))
 
