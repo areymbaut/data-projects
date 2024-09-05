@@ -44,9 +44,9 @@ This repository collects various personal projects aiming at enhancing my data-a
     - a convolutional network comprising residual connections (ResNet).
     - a convolutional network comprising skip connections.
   - ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
-- [STL-10 image-classification application using Streamlit](/python_projects/stl10_image_classification_streamlit)
+- [STL-10 image-classification web application using Streamlit](/python_projects/stl10_image_classification_streamlit)
   - Leverage unsupervised learning to train a rather deep residual-network (ResNet) classifier.
-  - Deploy the resulting model online as a [Streamlit application](https://stl10-image-classification-ar.streamlit.app).
+  - Deploy the resulting model online as a [Streamlit web application](https://stl10-image-classification-ar.streamlit.app).
   - ![Static Badge](https://img.shields.io/badge/Streamlit-purple) ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [Object detection](/python_projects/object_detection)
   - Detect objects and classify them into 20 categories using a region-based convolutional neural network (R-CNN).
