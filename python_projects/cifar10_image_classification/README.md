@@ -311,7 +311,7 @@ We defined three models using similar code as below (the example below correspon
 - the model with `block_type=ResBlock` was called `Custom_ResNet`.
 - the model with `block_type=SkipBlock` was called `Custom_SkipNet`.
 
-The `ModelTrainer` class was taken and adapted from [Luke Ditria's GitHub account](https://github.com/LukeDitria/pytorch_tutorials/blob/main/section05_transfer_learning/notebooks/Trainer.py).
+The `ModelTrainer` class was taken and adapted from [Luke Ditria's GitHub repository](https://github.com/LukeDitria/pytorch_tutorials/blob/main/section05_transfer_learning/notebooks/Trainer.py).
 
 ```python
 from Trainer import ModelTrainer
