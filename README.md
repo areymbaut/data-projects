@@ -48,6 +48,10 @@ This repository collects various personal projects aiming at enhancing my data-a
   - Leverage unsupervised learning to train a rather deep residual-network (ResNet) classifier.
   - Deploy the resulting model online as a [Streamlit web application](https://stl10-image-classification-ar.streamlit.app).
   - ![Static Badge](https://img.shields.io/badge/Streamlit-purple) ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
+- [CUB-200 image segmentation using U-Net and associated Streamlit web application](/python_projects/cub200_image_segmentation_streamlit)
+  - Segment bird images using a custom U-Net.
+  - Deploy the resulting model online as a [Streamlit web application](https://cub200-image-segmentation-ar.streamlit.app).
+  - ![Static Badge](https://img.shields.io/badge/Streamlit-purple) ![Static Badge](https://img.shields.io/badge/Pytorch-orangered) ![Static Badge](https://img.shields.io/badge/Numpy-blue) ![Static Badge](https://img.shields.io/badge/Matplotlib-darkgreen) ![Static Badge](https://img.shields.io/badge/Seaborn-darkgreen)
 - [Object detection](/python_projects/object_detection)
   - Detect objects and classify them into 20 categories using a region-based convolutional neural network (R-CNN).
   - Take advantage of transfer learning to do so.
