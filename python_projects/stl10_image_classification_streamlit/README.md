@@ -18,7 +18,7 @@ This project was carried out using the following tools:
 
 ## Model design, training and evaluation
 
-In this README, let us not go into details regarding the model training and evaluation (to better focus on Streamlit). That being said, the model design, training and evaluation is described in the Jupyter Notebook [model_training/unsupervised_learning.ipynb](./model_training/unsupervised_learning.ipynb).
+In this README, let us not go into details regarding the model training and evaluation (to better focus on Streamlit). That being said, the model design, training and evaluation are described in the Jupyter Notebook [model_training/unsupervised_learning.ipynb](./model_training/unsupervised_learning.ipynb).
 
 In summary:
 - The CNN classifier is based on the residual network with 18 layers (ResNet18) listed in the Pytorch model zoo (with randomly initialized weights).
@@ -109,7 +109,8 @@ with col2:
 Regardless of the option chosen above, the image of interest is displayed and classified using the CNN model. The user can see:
 - the displayed image.
 - the distribution of class-specific scores (to better understand the model decision).
-- some colored text indicating the classification success/failure, if the ground-truth label is known.
+- if the ground-truth label is known (_i.e._, the user chose to use a random STL-10 test image/label):
+    - some colored text indicating the classification success/failure.
 
 ```python
 # Classification
