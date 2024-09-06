@@ -5,7 +5,7 @@ This project's aims are twofold:
 - segmenting 128x128 color images of birds using a custom U-Net.
 - deploying the resulting model online using Streamlit.
 
-Link to the Streamlit application: [https://stl10-image-classification-ar.streamlit.app](https://cub200-image-segmentation-ar.streamlit.app).
+Link to the Streamlit application: [https://cub200-image-segmentation-ar.streamlit.app](https://cub200-image-segmentation-ar.streamlit.app).
 
 ## Tools I used
 This project was carried out using the following tools:
@@ -107,7 +107,7 @@ Details regarding the model training and evaluation can be found in the aforemen
 
 ## Streamlit application
 
-The resulting U-Net classifier was deployed online using Streamlit: see [https://stl10-image-classification-ar.streamlit.app](https://cub200-image-segmentation-ar.streamlit.app). The code underlying this application is located in the [streamlit_app folder](./streamlit_app/). Note the model and CUB-200 test images/labels were stored in Dropbox to be easily loaded while spinning the application without taking space on GitHub.
+The resulting U-Net classifier was deployed online using Streamlit: see [https://cub200-image-segmentation-ar.streamlit.app](https://cub200-image-segmentation-ar.streamlit.app). The code underlying this application is located in the [streamlit_app folder](./streamlit_app/). Note the model and CUB-200 test images/labels were stored in Dropbox to be easily loaded while spinning the application without taking space on GitHub.
 
 Whereas the main part of the Streamlit application is coded in [streamlit_app/app.py](./streamlit_app/app.py), various helper functions are defined in [streamlit_app/handle_model_data.py](./streamlit_app/handle_model_data.py), namely those appearing in this package importation.
 
